@@ -25,8 +25,11 @@ class Covid19DataPortalAccessionFetcher(object):
 
         # Check for the accessions file, if not found return an error
         if not os.path.exists("accessions.tsv"):
-            logging.critical("the \"accessions.tsv\" file does not exist.\n")
-            exit(-1)
+            if not os.path.exists("accessions.tsv.gz"):
+                logging.critical("the \"accessions.tsv\" file does not exist.\n")
+                exit(-1)
+            else:
+                os.system("gzip -d accessions.tsv.gz")
 
         # build the AccessionsPropertiesMap
         self.accessions_properties_map = self._buildAccessionsPropertiesMap()
